@@ -54,30 +54,17 @@ if not exist ".env" (
   notepad.exe ".env"
 )
 
-if not exist "node_modules" goto install_dependencies
-if not exist "node_modules\.raku-deps-ready" goto install_dependencies
-goto dependencies_ready
-
-:install_dependencies
-echo [INFO] Installiere/aktualisiere Abhaengigkeiten...
-call npm.cmd install
+echo [INFO] Pruefe Abhaengigkeiten...
+call npm.cmd install --no-package-lock
 if errorlevel 1 (
   echo.
   echo [FEHLER] npm install ist fehlgeschlagen.
   pause
   exit /b 1
 )
-type nul > "node_modules\.raku-deps-ready"
 echo [OK] Abhaengigkeiten bereit.
 echo.
 
-:dependencies_ready
-if not exist "packages\shared\dist\index.js" goto build_project
-if not exist "apps\web\dist\index.html" goto build_project
-if not exist "apps\server\dist\index.js" goto build_project
-goto build_ready
-
-:build_project
 echo [INFO] Baue Twitch Bot...
 call npm.cmd run build
 if errorlevel 1 (
@@ -89,7 +76,6 @@ if errorlevel 1 (
 echo [OK] Build erfolgreich.
 echo.
 
-:build_ready
 echo [INFO] Starte Raku Twitch Bot...
 echo [INFO] Dashboard: http://localhost:3210
 echo [INFO] Beenden mit STRG+C
