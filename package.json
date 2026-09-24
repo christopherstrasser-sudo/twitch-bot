@@ -1,0 +1,24 @@
+{
+  "name": "raku-twitch-bot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Twitch-only chatbot and control center for Windows Server",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,web \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "npm run dev -w @raku/server",
+    "dev:web": "npm run dev -w @raku/web",
+    "build": "npm run build -w @raku/shared && npm run build -w @raku/web && npm run build -w @raku/server",
+    "start": "npm run start -w @raku/server",
+    "typecheck": "npm run typecheck -w @raku/shared && npm run typecheck -w @raku/web && npm run typecheck -w @raku/server"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
